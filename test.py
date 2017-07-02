@@ -1,8 +1,3 @@
-# Name: Aditya Pandey
-# Class: Distributed Systems
-
-
-
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, request
 import requests
@@ -15,11 +10,13 @@ def run_query(longitude, latitude):
     url="https://graphical.weather.gov:443/xml/SOAP_server/ndfdXMLserver.php"
     #headers = {'content-type': 'application/soap+xml'}
     headers = {'content-type': 'text/xml'}
+	lat = str(latitude)
+	log = str(longitude)
     body = """<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
     <SOAP-ENV:Body>
     <ns3591:NDFDgen xmlns:ns3591="uri:DWMLgen">
-    <latitude xsi:type="xsd:string">""" + str(latitude) + """</latitude>
-    <longitude xsi:type="xsd:string">""" + str(longitude) + """</longitude>
+    <latitude xsi:type="xsd:string">""" + lat + """</latitude>
+    <longitude xsi:type="xsd:string">""" + log + """</longitude>
     <product xsi:type="xsd:string">time-series</product>
     <startTime xsi:type="xsd:string">2017-05-02T00:00:00</startTime>
     <endTime xsi:type="xsd:string">2017-05-02T23:59:59</endTime>
