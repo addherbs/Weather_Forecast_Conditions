@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title> Input Latitude and Longitude </title>
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <form method="POST" id="dataForm">
+        Latitude
+        <input type="text" name="latitude" id="latitudeID"><br>
+        Longitude
+        <input type="text" name="longitude" id="longitudeID"><br>
+        <input type="submit">
+    </form>
+    <div class="container"></div>
+  </body>
+
+  <script>
+      $(document).ready(function() {
+          $("#dataForm").submit(function(event) {
+              event.preventDefault();
+              $.ajax({
+                  url: "{{ url_for('show_index') }}",
+                  type: 'POST',
+                  contentType: 'application/json;charset=UTF-8;',
+                  data: JSON.stringify($("#dataForm").serialize()),
+                  success: function(result) {
+                      debugger;
+                      var parsed_result = JSON.parse(result);  // we need to set multiple images dynamically
+                      // always empty the original container
+                      console.log("Came till here");
+                      $(".container").empty();
+                      for (var i = 0; i < parsed_result['success'][0].length; i++) {
+                          $(".container").append("<img src=" + parsed_result['success'][0][i] + ">");
+                      }
+                      // put a check for maximum temps
+                      console.log("Came till here also");
+                      if (parsed_result['success'][1]['minimum_temps']) {
+                          for (var i = 0; i < parsed_result['success'][1]['minimum_temps'].length; i++) {
+                              $(".container").append("<p>Minimum temperature is " + parsed_result['success'][1]['minimum_temps'][i] + "</p>");
+                          }
+                      }
+                      if (parsed_result['success'][1]['maximum_temps']) {
+                          for (var i = 0; i < parsed_result['success'][1]['maximum_temps'].length; i++) {
+                              $(".container").append("<p>Maximum temperature is" + parsed_result['success'][1]['minimum_temps'][i] + "</p>");
+                          }
+                      }
+                      for (var i = 0; i < parsed_result['success'][2].length; i++) {
+                          $(".container").append("<p>Wind speeds" + parsed_result['success'][2][i] + "</p>");
+                      }
+                      for (var i = 0; i < parsed_result['success'][3].length; i++) {
+                          $(".container").append("<p>Direction values are " + parsed_result['success'][3][i] + "</p>");
+                      }
+                      for (var i = 0; i < parsed_result['success'][4].length; i++) {
+                          $(".container").append("<p>Cloud amounts -> " + parsed_result['success'][4][i] + "</p>");
+                      }
+                      for (var i = 0; i < parsed_result['success'][5].length; i++) {
+                          $(".container").append("<p>Probabilities of precipitation " + parsed_result['success'][5][i] + "</p>");
+                      }
+                      console.log("The result is", result);
+                  },
+                  error: function(result){
+                      console.log("There is an error");
+                      console.log(result);
+                  }
+              });
+          });
+      });
+  </script>
+</html>
