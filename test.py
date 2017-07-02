@@ -1,7 +1,6 @@
 # Name: Aditya Pandey
 # Class: Distributed Systems
-# Class Number: CSE 5306
-# Student ID: 1001405034
+
 
 
 from bs4 import BeautifulSoup
