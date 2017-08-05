@@ -82,11 +82,11 @@ def run_query(longitude, latitude):
     </SOAP-ENV:Envelope>"""
 
     response = requests.post(url,data=body,headers=headers)
-    #print (response.content)
+    
     xml_content = response.content.decode('utf-8')
     # now we need to parse xml_content
     parsed_content = html.unescape(xml_content)
-    # print ('response is', parsed_content)
+    
     soup = BeautifulSoup(parsed_content, 'html.parser')
     temp_divs = soup.findAll('temperature')
     wind_divs = soup.findAll('wind-speed')
@@ -94,7 +94,8 @@ def run_query(longitude, latitude):
     cloud_amount_divs = soup.findAll('cloud-amount')
     prob_divs = soup.findAll('probability-of-precipitation')
     condition_icon_divs = soup.findAll('conditions-icon')
-    # water_state_divs = soup.findAll('water-state')
+    
+	
     temperature_values = []
     wind_speeds = []
     direction_values = []
