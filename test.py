@@ -10,8 +10,8 @@ def run_query(longitude, latitude):
     url="https://graphical.weather.gov:443/xml/SOAP_server/ndfdXMLserver.php"
     #headers = {'content-type': 'application/soap+xml'}
     headers = {'content-type': 'text/xml'}
-	lat = str(latitude)
-	log = str(longitude)
+    lat = str(latitude)
+    log = str(longitude)
     body = """<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
     <SOAP-ENV:Body>
     <ns3591:NDFDgen xmlns:ns3591="uri:DWMLgen">
@@ -82,20 +82,22 @@ def run_query(longitude, latitude):
     </SOAP-ENV:Envelope>"""
 
     response = requests.post(url,data=body,headers=headers)
-    
+
     xml_content = response.content.decode('utf-8')
     # now we need to parse xml_content
     parsed_content = html.unescape(xml_content)
-    
+
     soup = BeautifulSoup(parsed_content, 'html.parser')
+
+
     temp_divs = soup.findAll('temperature')
     wind_divs = soup.findAll('wind-speed')
     direction_divs = soup.findAll('direction')
     cloud_amount_divs = soup.findAll('cloud-amount')
     prob_divs = soup.findAll('probability-of-precipitation')
     condition_icon_divs = soup.findAll('conditions-icon')
-    
-	
+
+
     temperature_values = []
     wind_speeds = []
     direction_values = []
